@@ -12,7 +12,7 @@ class Program
 [MemoryDiagnoser]
 public class NBodyBenchmark
 {
-    [Params(1_000, 10_000, 100_000)] 
+    [Params(1_000, 10_000, 100_000, 1_000_000)] 
     public int N;
 
     private float _dt;
