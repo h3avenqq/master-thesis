@@ -16,7 +16,6 @@ class Program
 
 
 [MemoryDiagnoser]
-[Orderer(SummaryOrderPolicy.FastestToSlowest)]
 [RankColumn]
 [HardwareCounters(HardwareCounter.CacheMisses)]
 public class SearchReadBenchmark
@@ -86,8 +85,8 @@ public class SearchReadBenchmark
 
 
 [MemoryDiagnoser]
-[Orderer(SummaryOrderPolicy.FastestToSlowest)]
 [RankColumn]
+[HardwareCounters(HardwareCounter.CacheMisses)]
 public class BTreeBenchmark
 {
     private int[] _keys;
@@ -124,23 +123,35 @@ public class BTreeBenchmark
     }
 
     [Benchmark(Baseline = true)]
-    public void Oop_Bst()
+    public bool Oop_Bst()
     {
+        bool result = false;
         foreach (var key in _keysToSearch)
-            _oopBst.Contains(key);
+        {
+            result ^= _oopBst.Contains(key);
+        }
+        return result;
     }
 
     [Benchmark]
-    public void Oop_BTree()
+    public bool Oop_BTree()
     {
+        bool result = false;
         foreach (var key in _keysToSearch)
-            _oopBTree.Contains(key);
+        {
+            result ^= _oopBTree.Contains(key);
+        }
+        return result;
     }
 
     [Benchmark]
-    public void Dop_BTree()
+    public bool Dop_BTree()
     {
+        bool result = false;
         foreach (var key in _keysToSearch)
-            _dopBTree.Contains(key);
+        {
+            result ^= _dopBTree.Contains(key);
+        }
+        return result;
     }
 }
