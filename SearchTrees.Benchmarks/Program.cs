@@ -11,7 +11,14 @@ namespace SearchTrees.Benchmarks;
 
 class Program
 {
-    static void Main(string[] args) => BenchmarkRunner.Run<BTreeBenchmark>();
+    static void Main(string[] args)
+    {
+        BenchmarkRunner.Run(new[]
+        {
+            typeof(SearchReadBenchmark),
+            typeof(BTreeBenchmark)
+        });
+    }
 }
 
 
@@ -28,7 +35,7 @@ public class SearchReadBenchmark
     private ISearchIndex<int, int> _flatArray;
     private ISearchIndex<int, int> _eytzinger;
 
-    [Params(1_000, 100_000, 1_000_000)]
+    [Params(1_000, 100_000, 1_000_000, 10_000_000)]
     public int N;
 
     [GlobalSetup]
@@ -96,7 +103,7 @@ public class BTreeBenchmark
     private IDynamicIndex<int, int> _oopBTree;
     private IDynamicIndex<int, int> _dopBTree;
 
-    [Params(10_000, 100_000)] 
+    [Params(10_000, 100_000, 10_000_000)] 
     public int N;
 
     [GlobalSetup]
@@ -115,10 +122,10 @@ public class BTreeBenchmark
         foreach (var key in _keys) _oopBTree.Insert(key, key * 2);
 
         // 3. DOD B-Tree 
-        _dopBTree = new BTreeDop<int, int>(N); 
+        _dopBTree = new BTreeDop<int, int>((int)(N * 0.7));
         foreach (var key in _keys) _dopBTree.Insert(key, key * 2);
         
-        GC.Collect();
+        GC.Collect(2, GCCollectionMode.Forced, true, true);
         GC.WaitForPendingFinalizers();
     }
 
