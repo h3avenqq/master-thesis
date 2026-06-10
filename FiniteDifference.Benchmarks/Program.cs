@@ -31,7 +31,8 @@ public static class BenchmarkCases
         new(0.001, 0.05),
         new(0.0002, 0.02),
         new(0.00005, 0.01),
-        new(0.00001, 0.005)
+        new(0.00001, 0.005),
+        new(0.000002, 0.00225)
     ];
 }
 
